@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">   
+  
+<mapper namespace="entity.SysUser">
+      <!-- 自动生成id策略 -->
+    <insert id="add" parameterType="entity.SysUser" useGeneratedKeys="true" keyProperty="id">  
+       	insert into sys_user(tc_code, tc_name, tc_email, tc_password, tc_add_time) values (#{m.tc_code}, #{m.tc_name}, #{m.tc_email}, #{m.tc_password}, date_format(now(),'%Y-%c-%d %h:%i:%s'))  
+    </insert>  
+	
+	<delete id="del" parameterType="entity.SysUser">
+		delete from sys_user where id = #{id}
+	</delete>
+	
+	<update id="upd" parameterType="entity.SysUser">
+		update sys_user set
+		  	   tc_code = #{m.tc_code},
+		  	   tc_name = #{m.tc_name},
+		  	   tc_email = #{m.tc_email}
+		 where id = #{m.id}
+	</update>
+	<update id="updPwd" parameterType="entity.SysUser">
+		update sys_user set
+		  	   tc_password = #{m.tc_password}
+		 where id = #{m.id}
+	</update>
+  	
+	<resultMap type="entity.SysUser" id="result">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+		<result property="m.tc_email" column="tc_email"/>
+		<result property="m.tc_password" column="tc_password"/>
+		<result property="m.tc_add_time" column="tc_add_time"/>
+	</resultMap>
+  	
+	<sql id="columns">
+		ID, TC_CODE, TC_NAME, TC_EMAIL, TC_PASSWORD, TC_ADD_TIME
+	</sql>
+	
+	<sql id="page">
+		<if test="offset!=null and limit!=null"> limit #{offset,javaType=String,jdbcType=NUMERIC}, #{limit,javaType=String,jdbcType=NUMERIC} </if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="tc_code != null and tc_code != ''"> and TC_CODE like concat('%',#{tc_code},'%') </if>
+			<if test="tc_name != null and tc_name != ''"> and TC_NAME like concat('%',#{tc_name},'%') </if>
+			<if test="tc_email != null and tc_email != ''"> and TC_EMAIL like concat('%',#{tc_email},'%') </if>
+			<if test="login_account != null and login_account != ''"> and (TC_CODE = #{login_account} or TC_NAME = #{login_account} or TC_EMAIL = #{login_account})</if>
+		</where>
+	</sql>	
+	
+	<select id="getById" resultMap="result">
+		select <include refid="columns"/> from sys_user where id = #{id}
+	</select>
+	
+	<select id="get" resultType="list" resultMap="result">
+		select <include refid="columns"/> from sys_user
+		<include refid="dynamicWhere" /> order by 1
+		<include refid="page" />
+	</select>
+	
+	<select id="getCount" resultType="int">
+		select count(1) from sys_user
+		<include refid="dynamicWhere" />
+	</select>
+</mapper>  
