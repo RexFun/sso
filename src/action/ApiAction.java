@@ -1,37 +1,40 @@
 package action;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import chok.devwork.BaseController;
-import entity.User;
-import service.UserService;
-import service.TicketService;
+import chok.sso.Api;
+import service.ApiService;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/api")
-public class ApiAction extends BaseController<Object>
+public class ApiAction extends BaseController<Api>
 {
 	@Autowired
-	private UserService service;
+	private ApiService service;
 	
-	@RequestMapping("/getLoginer")
-	public void getLoginer() 
+	@RequestMapping("/getAppByUserId")
+	public void getAppByUserId() 
 	{
-		String ticket = req.getString("ticket");
-		System.out.println("ticket=>"+ticket);
-		// 根据ticket获取用户account
-		String account = TicketService.getAccountByTicket(ticket);
-		// 根据用户account获取用户对象
-		Map<String, String> m = new HashMap<String, String>();
-		m.put("tc_code", account);
-		User u = (User) service.get(m).get(0);
-		printJson(u);
+		printJson(service.getAppByUserId(req.getParameterValueMap(false, true)));
+	}
+	@RequestMapping("/getMenuByUserId")
+	public void getMenuByUserId() 
+	{
+		printJson(service.getMenuByUserId(req.getParameterValueMap(false, true)));
+	}
+	@RequestMapping("/getBtnByUserId")
+	public void getBtnByUserId() 
+	{
+		printJson(service.getBtnByUserId(req.getParameterValueMap(false, true)));
+	}
+	@RequestMapping("/getActByUserId")
+	public void getActByUserId() 
+	{
+		printJson(service.getActByUserId(req.getParameterValueMap(false, true)));
 	}
 }

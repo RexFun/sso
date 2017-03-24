@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">   
+  
+<mapper namespace="chok.sso.Api">
+  	
+	<resultMap type="chok.sso.Api" id="resultApp">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+	</resultMap>
+	<resultMap type="chok.sso.Api" id="resultMenu">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+	</resultMap>
+	<resultMap type="chok.sso.Api" id="resultBtn">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+	</resultMap>
+	<resultMap type="chok.sso.Api" id="resultAct">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+	</resultMap>
+  	
+	<sql id="columnsApp">
+		ID, TC_CODE, TC_NAME
+	</sql>
+	<sql id="columnsMenu">
+		ID, TC_CODE, TC_NAME
+	</sql>
+	<sql id="columnsPermit">
+		ID, TC_CODE, TC_NAME
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="tc_code != null and tc_code != ''"> and TC_CODE like concat('%',#{tc_code},'%') </if>
+			<if test="tc_name != null and tc_name != ''"> and TC_NAME like concat('%',#{tc_name},'%') </if>
+		</where>
+	</sql>	
+	
+	<select id="getAppByUserId" resultType="list" resultMap="resultApp">
+		select <include refid="columnsApp"/>  from tb_app t
+		 inner join tb_role_permit_mapping t1 on t.tc_permit_id=t1.tc_permit_id
+		 inner join tb_user_role_mapping t2 on t1.tc_role_id=t2.tc_role_id and t2.tc_user_id=#{tc_user_id}
+		 <include refid="dynamicWhere" />
+		 group by t.id
+		 order by t.tc_order
+	</select>
+	<select id="getMenuByUserId" resultType="list" resultMap="resultMenu">
+		select <include refid="columnsMenu"/>  from tb_menu t
+		 inner join tb_role_permit_mapping t1 on t.tc_permit_id=t1.tc_permit_id
+		 inner join tb_user_role_mapping t2 on t1.tc_role_id=t2.tc_role_id and t2.tc_user_id=#{tc_user_id}
+		 <include refid="dynamicWhere" />
+		 group by t.id
+		 order by t.tc_order
+	</select>
+	<select id="getBtnByUserId" resultType="list" resultMap="resultBtn">
+		select <include refid="columnsBtn"/>  from tb_permit t
+		 inner join tb_role_permit_mapping t1 on t.id=t1.tc_permit_id and t.tc_type=2
+		 inner join tb_user_role_mapping t2 on t1.tc_role_id=t2.tc_role_id and t2.tc_user_id=#{tc_user_id}
+		 group by t.id
+		 order by t.tc_order
+	</select>
+	<select id="getActByUserId" resultType="list" resultMap="resultAct">
+		select <include refid="columnsAct"/>
+		  from tb_permit t, 
+		  	   tb_role_permit_mapping t1, 
+		  	   tb_user_role_mapping t2, 
+		  	   tb_user t3
+		 where t.id = t1.tc_permit_id 
+		   and t1.tc_role_id = t2.tc_role_id
+		   and t2.tc_user_id = t3.id
+		   and t3.id = #{tc_user_id}
+		   and t.tc_url = #{tc_url};
+	</select>
+	
+</mapper>  
