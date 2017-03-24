@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import chok.devwork.BaseController;
 import chok.util.EncryptionUtil;
 import chok.util.http.MyCookie;
-import entity.SysUser;
+import entity.User;
 import listener.SessionListener;
-import service.SysUserService;
+import service.UserService;
 import service.TicketService;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/auth")
-public class AuthAction extends BaseController<SysUser> 
+public class AuthAction extends BaseController<User> 
 {
 	@Autowired
-	private SysUserService service;
+	private UserService service;
 	
 	public static final String LOGINER = "sso.loginer";
 	
@@ -85,7 +85,7 @@ public class AuthAction extends BaseController<SysUser>
 			}
 			else
 			{
-				SysUser u = (SysUser)service.get(m).get(0);
+				User u = (User)service.get(m).get(0);
 				if(!EncryptionUtil.getMD5(req.getString("password")).equals(u.getString("tc_password")))
 				{// 验证密码
 					result.setSuccess(false);

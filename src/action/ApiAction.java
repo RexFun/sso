@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import chok.devwork.BaseController;
-import entity.SysUser;
-import service.SysUserService;
+import entity.User;
+import service.UserService;
 import service.TicketService;
 
 @Scope("prototype")
@@ -19,7 +19,7 @@ import service.TicketService;
 public class ApiAction extends BaseController<Object>
 {
 	@Autowired
-	private SysUserService service;
+	private UserService service;
 	
 	@RequestMapping("/getLoginer")
 	public void getLoginer() 
@@ -31,7 +31,7 @@ public class ApiAction extends BaseController<Object>
 		// 根据用户account获取用户对象
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("tc_code", account);
-		SysUser u = (SysUser) service.get(m).get(0);
+		User u = (User) service.get(m).get(0);
 		printJson(u);
 	}
 }
