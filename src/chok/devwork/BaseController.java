@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 public class BaseController<T>
@@ -63,7 +64,24 @@ public class BaseController<T>
 			{
 				out = this.response.getWriter();
 			}
-			out.print(new Gson().toJson(o));
+			out.print(JSON.toJSON(o));
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void printJsonString(Object o)
+	{
+		response.setContentType("application/json");
+		try
+		{
+			if(out == null)
+			{
+				out = this.response.getWriter();
+			}
+			out.print(JSON.toJSONString(o));
 		}
 		catch(Exception ex)
 		{

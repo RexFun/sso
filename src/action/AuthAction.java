@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,10 +116,24 @@ public class AuthAction extends BaseController<User>
 	}
 	
 	@RequestMapping("/logout")
-	public String logout()
+	public void logout() throws IOException
 	{
-		session.removeAttribute(LOGINER);
-		return "/login.jsp";
+		try
+		{
+			MyCookie cookie = new MyCookie(request, response);
+			String cookieTicket = String.valueOf(cookie.getValue(SessionListener.SSO_TICKET));
+			if(!cookieTicket.equals("null") && cookieTicket.length() > 0)
+			{
+				removeLoginInfo(request, response);// 试着删除
+			}
+		}
+		catch(Exception e)
+		{
+			log.error(e.getMessage());
+		}
+		String serviceURL = java.net.URLEncoder.encode(req.getString("service"), "UTF-8");
+		response.sendRedirect(request.getContextPath() + "/auth/login.action?service=" + String.valueOf(serviceURL));
+		return;
 	}
 
 	private String putLoginInfo(HttpServletRequest request, HttpServletResponse response, String account, String name)
