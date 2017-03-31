@@ -93,24 +93,6 @@ public class ApiService extends BaseService<Api,Long>
 		return treeNodes;
 	}
 	
-	public List<Map<String, Object>> getBtnByUserId(Map<String, Object> param) 
-	{
-		List<Api> btnPermitData = apiDao.getBtnByUserId(param);
-		List<Map<String, Object>> treeNodes = new ArrayList<Map<String, Object>>();
-		for(int i=0; i<btnPermitData.size(); i++)
-		{
-			Api o = btnPermitData.get(i);
-			treeNodes.add(o.getM());
-		}
-		return treeNodes;
-	}
-	public List<Api> getActByUserId(Map<String, Object> param) 
-	{
-		return apiDao.getActByUserId(param);
-	}
-	
-
-	
 	// 递归检索父菜单id集合
 	public List<Long> getParentMenus(Long userid, Long pid, List<Long> pids)
 	{
@@ -144,5 +126,29 @@ public class ApiService extends BaseService<Api,Long>
 			}
 		}
 		return cids;
+	}
+	
+	public List<Map<String, Object>> getBtnByUserId(Map<String, Object> param) 
+	{
+		List<Api> btnPermitData = apiDao.getBtnByUserId(param);
+		List<Map<String, Object>> treeNodes = new ArrayList<Map<String, Object>>();
+		for(int i=0; i<btnPermitData.size(); i++)
+		{
+			Api o = btnPermitData.get(i);
+			treeNodes.add(o.getM());
+		}
+		return treeNodes;
+	}
+	
+	public List<Map<String, Object>> getActByUserId(Map<String, Object> param) 
+	{
+		List<Api> actPermitData = apiDao.getActByUserId(param);
+		List<Map<String, Object>> treeNodes = new ArrayList<Map<String, Object>>();
+		for(int i=0; i<actPermitData.size(); i++)
+		{
+			Api o = actPermitData.get(i);
+			treeNodes.add(o.getM());
+		}
+		return treeNodes;
 	}
 }
