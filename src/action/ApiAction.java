@@ -49,19 +49,6 @@ public class ApiAction extends BaseController<Api>
 			printJson("");
 		}
 	}
-//	@RequestMapping("/getLoginer")
-//	public void getLoginer() 
-//	{
-//		String ticket = req.getString("ticket");
-//		System.out.println("ticket=>"+ticket);
-//		// 根据ticket获取用户account
-//		String account = TicketService.getAccountByTicket(ticket);
-//		// 根据用户account获取用户对象
-//		Map<String, String> m = new HashMap<String, String>();
-//		m.put("tc_code", account);
-//		User u = (User) userService.get(m).get(0);
-//		printJson(u);
-//	}
 	
 	@RequestMapping("/getAppByUserId")
 	public void getAppByUserId() 

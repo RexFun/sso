@@ -1,7 +1,6 @@
 package action;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +17,8 @@ import chok.util.EncryptionUtil;
 import chok.util.http.MyCookie;
 import entity.User;
 import listener.SessionListener;
-import service.UserService;
 import service.TicketService;
+import service.UserService;
 
 @Scope("prototype")
 @Controller
