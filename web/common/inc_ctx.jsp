@@ -1,10 +1,7 @@
-<%@ page import="chok.util.PropertiesUtil" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 String ctx = request.getContextPath();
-String imagePath = PropertiesUtil.getImagePath();
 request.setAttribute("ctx", ctx);
-request.setAttribute("imagePath", imagePath);
 %>
 <!DOCTYPE html>
 <html>
