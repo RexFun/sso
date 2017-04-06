@@ -44,7 +44,7 @@
 		t.id, t.tc_code, t.tc_name, t.tc_url, t.tc_order
 	</sql>
 	<sql id="columnsMenu">
-		t.id, t.pid, t.tc_app_id, t.tc_permit_id, t.tc_code, t.tc_name, t.tc_url, t.tc_order
+		t.id, t.pid, t.tc_app_id, t.tc_permit_id, t.tc_code, t.tc_name, t1.tc_url, t.tc_order
 	</sql>
 	<sql id="columnsPermit">
 		t.id, t.pid, t.tc_app_id, t.tc_code, t.tc_name, t.tc_url, t.tc_order
@@ -76,8 +76,9 @@
 	</select>
 	<select id="getMenuByUserId" resultType="list" resultMap="resultMenu">
 		select <include refid="columnsMenu"/> from tb_menu t
-		 inner join tb_role_permit_mapping t1 on t.tc_permit_id=t1.tc_permit_id
-		 inner join tb_user_role_mapping t2 on t1.tc_role_id=t2.tc_role_id and t2.tc_user_id=#{tc_user_id}
+	     inner join tb_permit t1 on t.tc_permit_id = t1.id
+		 inner join tb_role_permit_mapping t2 on t.tc_permit_id=t2.tc_permit_id
+		 inner join tb_user_role_mapping t3 on t2.tc_role_id=t3.tc_role_id and t3.tc_user_id=#{tc_user_id}
 		 <include refid="dynamicWhere" />
 		 group by t.id
 		 order by t.tc_order

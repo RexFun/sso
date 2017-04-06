@@ -57,7 +57,12 @@ public class AuthAction extends BaseController<User>
 //				}
 //				else
 //				{
-					response.sendRedirect(serviceURL += ((serviceURL.indexOf("?") != -1) ? "&ticket=" : "?ticket=") + TicketService.getOnceTicket(cookieTicket));
+					serviceURL += ((serviceURL.indexOf("?") != -1) ? "&ticket=" : "?ticket=") + TicketService.getOnceTicket(cookieTicket);
+					if(log.isDebugEnabled())
+					{
+						log.debug("sso-server's new serviceURL -> "+serviceURL);
+					}
+					response.sendRedirect(serviceURL);
 //				}
 				return null;
 			}
