@@ -61,8 +61,8 @@
 			<if test="id != null and id != ''"> and t.id = #{id}</if>
 			<if test="pid != null and pid != ''"> and t.pid = #{pid}</if>
 			<if test="tc_app_id != null and tc_app_id != ''"> and t.tc_app_id = #{tc_app_id}</if>
-			<if test="tc_code != null and tc_code != ''"> and TC_CODE like concat('%',#{tc_code},'%') </if>
-			<if test="tc_name != null and tc_name != ''"> and TC_NAME like concat('%',#{tc_name},'%') </if>
+			<if test="tc_code != null and tc_code != ''"> and t.tc_code like concat('%',#{tc_code},'%') </if>
+			<if test="tc_name != null and tc_name != ''"> and t.tc_name like concat('%',#{tc_name},'%') </if>
 		</where>
 	</sql>	
 	
