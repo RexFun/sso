@@ -3,6 +3,12 @@
   
 <mapper namespace="entity.User">
   	
+	<update id="updPwd" parameterType="entity.User">
+		update tb_user set
+		  	   tc_password = #{m.tc_password}
+		 where id = #{m.id}
+	</update>
+	
 	<resultMap type="entity.User" id="result">
 		<id property="m.id" column="id"/>
 		<result property="m.tc_code" column="tc_code"/>
@@ -39,8 +45,8 @@
 		</where>
 	</sql>	
 	
-	<select id="getById" resultMap="result">
-		select <include refid="columns"/> from tb_user where id = #{id}
+	<select id="getByTcCode" resultMap="result">
+		select <include refid="columns"/> from tb_user where tc_code = #{tc_code}
 	</select>
 	
 	<select id="get" resultType="list" resultMap="result">

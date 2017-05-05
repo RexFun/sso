@@ -18,12 +18,23 @@ public class UserService extends BaseService<User,Long>
 	private UserDao userDao;
 
 	@Override
-	public BaseDao<User,Long> getEntityDao() {
+	public BaseDao<User,Long> getEntityDao() 
+	{
 		return userDao;
+	}
+
+	public User getByTcCode(String tcCode)
+	{
+		return userDao.getByTcCode(tcCode);
 	}
 	
 	public List<User> getInfo(Map<String, Object> param)
 	{
 		return userDao.getInfo(param);
+	}
+	
+	public void updPwd(User po)
+	{
+		userDao.updPwd(po);
 	}
 }

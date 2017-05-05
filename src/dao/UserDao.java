@@ -18,8 +18,18 @@ public class UserDao extends BaseDao<User,Long>
 		return User.class;
 	}
 
+	public User getByTcCode(String tcCode)
+	{
+		return this.getSqlSession().selectOne(getStatementName("getByTcCode"), tcCode);
+	}
+	
 	public List<User> getInfo(Map<String, Object> param) 
 	{
 		return this.getSqlSession().selectList(getStatementName("getInfo"), param);
+	}
+
+	public void updPwd(User po)
+	{
+		this.getSqlSession().update(getStatementName("updPwd"), po);
 	}
 }

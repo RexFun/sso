@@ -35,7 +35,7 @@ $(function(){
 		</div>
 		<!-- /.login-logo -->
 		<div class="login-box-body">
-			<form id="loginForm" action="${pageContext.request.contextPath}/auth/login2.action?service=${service}" method="post">
+			<form id="loginForm" action="${ctx}/auth/login2.action?service=${service}" method="post">
 				<div class="form-group has-feedback">
 					<input type="text" class="form-control" placeholder="" id="inputAccount" name="account">
 				</div>

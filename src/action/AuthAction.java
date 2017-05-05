@@ -29,7 +29,10 @@ public class AuthAction extends BaseController<User>
 	private UserService service;
 	
 	public static final String LOGINER = "sso.loginer";
-	
+
+	/**
+	 * 用户登录系统的入口
+	 */
 	@RequestMapping("/login")
 	public String login() throws IOException
 	{
@@ -118,7 +121,10 @@ public class AuthAction extends BaseController<User>
 		}
 		printJson(result);
 	}
-	
+
+	/**
+	 * 用户登出系统
+	 */
 	@RequestMapping("/logout")
 	public void logout() throws IOException
 	{
@@ -139,6 +145,78 @@ public class AuthAction extends BaseController<User>
 		response.sendRedirect(request.getContextPath() + "/auth/login.action?service=" + String.valueOf(serviceURL));
 		return;
 	}
+	
+	/**
+	 * 已登录用户修改密码的入口
+	 */
+	@RequestMapping("/password")
+	public String password() throws IOException
+	{
+		response.setHeader("P3P", "CP=CAO PSA OUR");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		//response.setHeader("P3P", "CP='CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR'");
+		//response.setHeader("P3P", "CP='IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT'");
+		String serviceURL = req.getString("service");
+		if(log.isDebugEnabled())
+		{
+			log.debug(serviceURL);
+		}
+		MyCookie cookie = new MyCookie(request, response);
+		String cookieTicket = cookie.getValue(SessionListener.SSO_TICKET);
+		if(cookieTicket != null)// 有cookie存在
+		{
+			String _account = TicketService.getAccountByTicket(cookieTicket);
+			if(_account != null)
+			{
+				request.setAttribute("account", _account);
+				request.setAttribute("service", serviceURL);
+				request.setAttribute("errorMsg", "");
+				return "/password.jsp";
+			}
+		}
+		removeLoginInfo(request, response);// 把相关信息删除
+		serviceURL = request.getContextPath() + "/password?service=" + java.net.URLEncoder.encode(serviceURL, "UTF-8");// 登录后回来修改页并可以再重定向回原页
+		response.sendRedirect(request.getContextPath() + "/login?service=" + String.valueOf(java.net.URLEncoder.encode(serviceURL, "UTF-8")));
+		return null;
+	}
+	@RequestMapping("/password2")
+	public void password2() 
+	{
+		try 
+		{
+			User po = service.getByTcCode(req.getString("account"));
+			if (null==po)
+			{
+				result.setSuccess(false);
+				result.setMsg(req.getString("account")+" 账号不存在");
+			}
+			else
+			{
+				if(!EncryptionUtil.getMD5(req.getString("old_password")).equals(po.getString("tc_password")))
+				{
+					result.setSuccess(false);
+					result.setMsg("原密码不正确");
+				}
+				else
+				{
+					po.set("tc_password", EncryptionUtil.getMD5(req.getString("new_password")));
+					service.updPwd(po);
+					Map<Object, Object> data = new HashMap<Object, Object>();
+					data.put("loginUrl", "auth/login.action?service="+req.getString("service"));
+					result.setData(data);
+					result.setSuccess(true);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			result.setSuccess(false);
+			result.setMsg(e.getMessage());
+		}
+		printJson(result);
+	}
+	
 
 	private String putLoginInfo(HttpServletRequest request, HttpServletResponse response, String account, String name)
 	{
