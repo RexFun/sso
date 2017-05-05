@@ -8,6 +8,7 @@ if (window != top) top.location.href = location.href;
  */
 if (window.top != window.self) window.top.location.href = window.self.location.href;
 $(function(){
+	$('input:text:first').focus(); //把焦点放在第一个文本框
 	$("#loginForm").submit(function(event) {
 		event.preventDefault();
 		var url = $("#loginForm").attr('action');
