@@ -11,9 +11,19 @@
 		<result property="m.tc_password" column="tc_password"/>
 		<result property="m.tc_add_time" column="tc_add_time"/>
 	</resultMap>
+	<resultMap type="entity.User" id="result2">
+		<id property="m.id" column="id"/>
+		<result property="m.tc_code" column="tc_code"/>
+		<result property="m.tc_name" column="tc_name"/>
+		<result property="m.tc_email" column="tc_email"/>
+		<result property="m.tc_add_time" column="tc_add_time"/>
+	</resultMap>
   	
 	<sql id="columns">
 		ID, TC_CODE, TC_NAME, TC_EMAIL, TC_PASSWORD, TC_ADD_TIME
+	</sql>
+	<sql id="columns2">
+		ID, TC_CODE, TC_NAME, TC_EMAIL, TC_ADD_TIME
 	</sql>
 	
 	<sql id="page">
@@ -35,6 +45,11 @@
 	
 	<select id="get" resultType="list" resultMap="result">
 		select <include refid="columns"/> from tb_user
+		<include refid="dynamicWhere" /> order by 1
+		<include refid="page" />
+	</select>
+	<select id="getInfo" resultType="list" resultMap="result2">
+		select <include refid="columns2"/> from tb_user
 		<include refid="dynamicWhere" /> order by 1
 		<include refid="page" />
 	</select>

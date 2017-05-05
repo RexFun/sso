@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import entity.User;
@@ -13,5 +16,10 @@ public class UserDao extends BaseDao<User,Long>
 	public Class<User> getEntityClass()
 	{
 		return User.class;
+	}
+
+	public List<User> getInfo(Map<String, Object> param) 
+	{
+		return this.getSqlSession().selectList(getStatementName("getInfo"), param);
 	}
 }

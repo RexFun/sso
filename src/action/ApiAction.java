@@ -39,9 +39,9 @@ public class ApiAction extends BaseController<Api>
 		// 根据用户account获取用户对象
 		if(account != null)
 		{
-			Map<String, String> m = new HashMap<String, String>();
+			Map<String, Object> m = new HashMap<String, Object>();
 			m.put("tc_code", account);
-			User u = (User) userService.get(m).get(0);
+			User u = (User) userService.getInfo(m).get(0);
 			printJson(u);
 		}
 		else
