@@ -40,7 +40,7 @@
         <!-- 文件大小最大值. 注意限制的不是针对单个文件，而是所有文件的容量之和-->  
         <property name="maxUploadSize" value="10485760000" />    
         <!-- 内存中的最大值 -->  
-        <property name="maxInMemorySize" value="40960" />    
+        <property name="maxInMemorySize" value="40960" />
     </bean>   
 
 </beans>

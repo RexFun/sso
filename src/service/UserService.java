@@ -28,9 +28,9 @@ public class UserService extends BaseService<User,Long>
 		return userDao.getByTcCode(tcCode);
 	}
 	
-	public List<User> getInfo(Map<String, Object> param)
+	public List<User> queryInfo(Map<String, Object> param)
 	{
-		return userDao.getInfo(param);
+		return userDao.queryInfo(param);
 	}
 	
 	public void updPwd(User po)

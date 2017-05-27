@@ -93,7 +93,7 @@ public class AuthAction extends BaseController<User>
 			}
 			else
 			{
-				User u = (User)service.get(m).get(0);
+				User u = (User)service.query(m).get(0);
 				if(!EncryptionUtil.getMD5(req.getString("password")).equals(u.getString("tc_password")))
 				{// 验证密码
 					result.setSuccess(false);

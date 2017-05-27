@@ -49,12 +49,12 @@
 		select <include refid="columns"/> from tb_user where tc_code = #{tc_code}
 	</select>
 	
-	<select id="get" resultType="list" resultMap="result">
+	<select id="query" resultType="list" resultMap="result">
 		select <include refid="columns"/> from tb_user
 		<include refid="dynamicWhere" /> order by 1
 		<include refid="page" />
 	</select>
-	<select id="getInfo" resultType="list" resultMap="result2">
+	<select id="queryInfo" resultType="list" resultMap="result2">
 		select <include refid="columns2"/> from tb_user
 		<include refid="dynamicWhere" /> order by 1
 		<include refid="page" />

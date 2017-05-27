@@ -41,7 +41,7 @@ public class ApiAction extends BaseController<Api>
 		{
 			Map<String, Object> m = new HashMap<String, Object>();
 			m.put("tc_code", account);
-			User u = (User) userService.getInfo(m).get(0);
+			User u = (User) userService.queryInfo(m).get(0);
 			printJson(u);
 		}
 		else
