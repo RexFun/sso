@@ -25,10 +25,38 @@ import service.UserService;
 @RequestMapping("/auth")
 public class AuthAction extends BaseController<User> 
 {
+	public static final String LOGINER = "sso.loginer";
+	
 	@Autowired
 	private UserService service;
-	
-	public static final String LOGINER = "sso.loginer";
+
+	/**
+	 * 根据 ticket 获取用户
+	 */
+	@RequestMapping("/getLoginer")
+	public void getLoginer() 
+	{
+		String onceTicket = req.getString("ticket");
+		if(log.isDebugEnabled()) log.debug("[request onceTicket]=>"+onceTicket);
+		String account = null;
+		// 根据ticket获取用户account
+		if(onceTicket.length()>0)
+		{
+			account = TicketService.getAccountByOnceTicket(onceTicket);
+		}
+		// 根据用户account获取用户对象
+		if(account != null)
+		{
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("tc_code", account);
+			User u = (User) service.queryInfo(m).get(0);
+			printJson(u);
+		}
+		else
+		{
+			printJson("");
+		}
+	}
 
 	/**
 	 * 用户登录系统的入口
@@ -94,7 +122,7 @@ public class AuthAction extends BaseController<User>
 			else
 			{
 				User u = (User)service.query(m).get(0);
-				if(!EncryptionUtil.getMD5(req.getString("password")).equals(u.getString("tc_password")))
+				if(!EncryptionUtil.getMD5(req.getString("password")).toLowerCase().equals(u.getString("tc_password")))
 				{// 验证密码
 					result.setSuccess(false);
 					result.setMsg("密码不正确");
@@ -192,14 +220,14 @@ public class AuthAction extends BaseController<User>
 			}
 			else
 			{
-				if(!EncryptionUtil.getMD5(req.getString("old_password")).equals(po.getString("tc_password")))
+				if(!EncryptionUtil.getMD5(req.getString("old_password")).toLowerCase().equals(po.getString("tc_password")))
 				{
 					result.setSuccess(false);
 					result.setMsg("原密码不正确");
 				}
 				else
 				{
-					po.set("tc_password", EncryptionUtil.getMD5(req.getString("new_password")));
+					po.set("tc_password", EncryptionUtil.getMD5(req.getString("new_password")).toLowerCase());
 					service.updPwd(po);
 					Map<Object, Object> data = new HashMap<Object, Object>();
 					data.put("loginUrl", "auth/login.action?service="+req.getString("service"));
